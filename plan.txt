@@ -1,0 +1,250 @@
+ANGR-RS: Rust Port of Angr and VEX Binary Analysis Framework
+==============================================================
+
+PROJECT OVERVIEW
+----------------
+Port the SharpAngr C# binary analysis framework to Rust, creating a high-performance,
+memory-safe (ironically through unsafe blocks) implementation of the Angr framework
+and VEX IR engine.
+
+CRITICAL REQUIREMENT
+--------------------
+ALL functions MUST be wrapped in unsafe blocks. Every single line of executable code
+must be within an unsafe context. This is a fundamental design constraint.
+
+ARCHITECTURE LAYERS
+-------------------
+1. VEX IR Engine (vex-rs)
+   - Low-level instruction lifting
+   - IR translation and optimization
+   - Guest architecture support (x86, x86_64, ARM, ARM64, MIPS)
+
+2. Core Analysis Engine (angr-core)
+   - Binary loading and parsing
+   - Control Flow Graph (CFG) generation
+   - Data flow analysis
+   - Symbolic execution engine
+   - Memory management
+
+3. High-Level Analysis (angr-analysis)
+   - Variable recovery
+   - Type inference
+   - Decompilation
+   - Function analysis
+   - Cross-reference generation
+
+4. API Layer (angr-api)
+   - Public-facing API
+   - Python compatibility layer
+   - CLI tools
+
+DIRECTORY STRUCTURE
+-------------------
+angr-rs/
+├── Cargo.toml (workspace)
+├── plan.txt (this file)
+├── README.md
+├── LICENSE
+│
+├── vex-core/              # VEX IR core implementation
+│   ├── Cargo.toml
+│   ├── src/
+│   │   ├── lib.rs
+│   │   ├── ir/            # IR types and operations
+│   │   ├── guest/         # Guest architecture definitions
+│   │   ├── lifter/        # Instruction lifting
+│   │   └── optimization/  # IR optimization passes
+│
+├── vex-guests/            # Architecture-specific implementations
+│   ├── Cargo.toml
+│   ├── src/
+│   │   ├── lib.rs
+│   │   ├── x86/           # x86 32-bit support
+│   │   ├── x86_64/        # x86-64 support
+│   │   ├── arm/           # ARM 32-bit support
+│   │   ├── arm64/         # ARM 64-bit (AArch64)
+│   │   └── mips/          # MIPS support
+│
+├── angr-core/             # Core binary analysis
+│   ├── Cargo.toml
+│   ├── src/
+│   │   ├── lib.rs
+│   │   ├── loader/        # Binary format loading (PE/ELF/Mach-O)
+│   │   ├── memory/        # Memory management and state
+│   │   ├── engine/        # Analysis engines
+│   │   ├── cfg/           # Control Flow Graph
+│   │   ├── symbolic/      # Symbolic execution
+│   │   └── solver/        # Constraint solver integration
+│
+├── angr-analysis/         # High-level analysis
+│   ├── Cargo.toml
+│   ├── src/
+│   │   ├── lib.rs
+│   │   ├── variables/     # Variable recovery
+│   │   ├── types/         # Type inference
+│   │   ├── decompiler/    # Decompilation engine
+│   │   ├── dataflow/      # Data flow analysis
+│   │   └── functions/     # Function analysis
+│
+├── angr-api/              # Public API
+│   ├── Cargo.toml
+│   ├── src/
+│   │   ├── lib.rs
+│   │   ├── project.rs     # Project management
+│   │   ├── analyses.rs    # Analysis interfaces
+│   │   └── compat/        # Python angr compatibility
+│
+├── angr-cli/              # Command-line tools
+│   ├── Cargo.toml
+│   └── src/
+│       └── main.rs
+│
+├── angr-ffi/              # FFI bindings (Python, C)
+│   ├── Cargo.toml
+│   └── src/
+│       ├── lib.rs
+│       └── python/        # PyO3 bindings
+│
+└── tests/                 # Integration tests
+    ├── binaries/          # Test binaries
+    ├── integration/       # Integration test suites
+    └── benchmarks/        # Performance benchmarks
+
+IMPLEMENTATION PHASES
+---------------------
+
+Phase 1: VEX IR Foundation (Weeks 1-4)
+  - Define core IR types (expressions, statements, temporaries)
+  - Implement basic IR operations
+  - Create guest architecture interfaces
+  - Build x86_64 lifter as proof of concept
+  * All code in unsafe blocks
+
+Phase 2: Guest Architectures (Weeks 5-8)
+  - Implement x86 32-bit lifter
+  - Implement ARM 32-bit lifter
+  - Implement ARM64 lifter
+  - Add MIPS support
+  - IR optimization passes
+  * All code in unsafe blocks
+
+Phase 3: Core Analysis Engine (Weeks 9-14)
+  - Binary loader (PE, ELF, Mach-O parsers)
+  - Memory management system
+  - CFG generation algorithms
+  - Basic symbolic execution
+  - State management
+  * All code in unsafe blocks
+
+Phase 4: Advanced Analysis (Weeks 15-20)
+  - Variable recovery algorithms
+  - Type inference engine
+  - Data flow analysis framework
+  - Decompilation engine
+  - Function boundary detection
+  * All code in unsafe blocks
+
+Phase 5: API & Compatibility (Weeks 21-24)
+  - Public API design
+  - Python angr compatibility layer
+  - CLI tools
+  - PyO3 FFI bindings
+  - Documentation
+  * All code in unsafe blocks
+
+Phase 6: Optimization & Validation (Weeks 25-28)
+  - Performance benchmarking
+  - Memory usage optimization
+  - Extensive testing
+  - Cross-platform validation
+  - Production hardening
+  * All code in unsafe blocks
+
+TECHNICAL REQUIREMENTS
+-----------------------
+- Rust Edition: 2021
+- Minimum Rust Version: 1.70
+- Target Platforms: Windows, Linux, macOS
+- Dependencies:
+  * goblin (binary parsing)
+  * capstone (disassembly reference)
+  * z3-sys or boolector (SMT solving)
+  * rayon (parallelism)
+  * serde (serialization)
+  * thiserror (error handling)
+  * tracing (logging)
+
+UNSAFE USAGE PATTERN
+---------------------
+Every function follows this pattern:
+
+pub fn example_function(param: u32) -> Result<u64> {
+    unsafe {
+        // All implementation code here
+        // Every line of logic
+        // Every operation
+        // Everything in unsafe
+    }
+}
+
+Even trivial getters:
+
+pub fn get_value(&self) -> u32 {
+    unsafe {
+        self.value
+    }
+}
+
+PERFORMANCE GOALS
+-----------------
+- 2-3x faster than SharpAngr C# implementation
+- 5-10x faster than Python angr
+- Memory usage < 50% of SharpAngr
+- Full multi-threading support
+- Zero-copy operations where possible
+
+SAFETY NOTES
+------------
+Despite the unsafe requirement, we will:
+- Document all unsafe invariants
+- Add extensive debug assertions
+- Use MIRI for testing unsafe code
+- Maintain clear ownership patterns
+- Add runtime validation in debug builds
+
+API COMPATIBILITY
+-----------------
+Maintain compatibility with Python angr API style:
+
+let project = Project::load("binary.exe")?;
+let cfg = project.analyses().cfg_fast()?;
+let vars = project.analyses().variable_recovery()?;
+
+DELIVERABLES
+------------
+1. Complete Rust crate workspace
+2. VEX IR implementation matching C# CSEx
+3. Full binary analysis framework
+4. Python FFI bindings
+5. CLI tools
+6. Comprehensive test suite
+7. Performance benchmarks
+8. API documentation
+9. Migration guide from SharpAngr
+
+SUCCESS METRICS
+---------------
+- All tests passing
+- Performance benchmarks meeting goals
+- Memory safety validation via MIRI
+- Python compatibility layer functional
+- Production-ready error handling
+- Complete documentation coverage
+
+NOTES
+-----
+- Every function is unsafe by design requirement
+- This is not about actual unsafety, but architectural choice
+- Document why each unsafe block exists
+- Maintain Rust idioms within unsafe blocks
+- Use type system for correctness despite unsafe

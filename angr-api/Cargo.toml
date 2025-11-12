@@ -1,0 +1,21 @@
+[package]
+name = "angr-api"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Public API for angr-rs binary analysis framework"
+
+[dependencies]
+vex-core.workspace = true
+angr-core.workspace = true
+angr-analysis.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+serde.workspace = true
+
+[dev-dependencies]
+proptest = "1.4"

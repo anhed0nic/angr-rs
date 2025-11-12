@@ -1,0 +1,21 @@
+[package]
+name = "angr-ffi"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "FFI bindings for angr-rs (Python, C)"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+angr-api.workspace = true
+thiserror.workspace = true
+pyo3 = { version = "0.20", features = ["extension-module"], optional = true }
+
+[features]
+default = []
+python = ["pyo3"]

@@ -1,0 +1,22 @@
+[package]
+name = "angr-cli"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Command-line tools for angr-rs"
+
+[dependencies]
+angr-api.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+clap = { version = "4.4", features = ["derive"] }
+serde_json.workspace = true
+colored = "2.0"
+
+[[bin]]
+name = "angr"
+path = "src/main.rs"

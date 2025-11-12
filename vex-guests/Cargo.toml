@@ -1,0 +1,18 @@
+[package]
+name = "vex-guests"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Architecture-specific VEX instruction lifters"
+
+[dependencies]
+vex-core.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+bitvec.workspace = true
+
+[dev-dependencies]
+capstone.workspace = true

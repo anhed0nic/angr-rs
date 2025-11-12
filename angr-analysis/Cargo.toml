@@ -1,0 +1,23 @@
+[package]
+name = "angr-analysis"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "High-level binary analysis algorithms"
+
+[dependencies]
+vex-core.workspace = true
+angr-core.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+serde.workspace = true
+hashbrown.workspace = true
+rayon.workspace = true
+smallvec.workspace = true
+
+[dev-dependencies]
+proptest = "1.4"

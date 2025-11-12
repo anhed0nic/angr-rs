@@ -1,0 +1,26 @@
+[package]
+name = "angr-core"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Core binary analysis framework"
+
+[dependencies]
+vex-core.workspace = true
+vex-guests.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+serde.workspace = true
+parking_lot.workspace = true
+hashbrown.workspace = true
+goblin.workspace = true
+object.workspace = true
+rayon.workspace = true
+z3.workspace = true
+
+[dev-dependencies]
+proptest = "1.4"
