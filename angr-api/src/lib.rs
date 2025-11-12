@@ -5,7 +5,6 @@
 //!
 //! # Safety
 //!
-//! ALL functions in this crate are marked unsafe by design requirement.
 //!
 //! # Quick Start
 //!

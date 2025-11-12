@@ -4,7 +4,6 @@
 //!
 //! # Safety
 //!
-//! ALL functions in this crate are marked unsafe by design requirement.
 
 #![allow(unsafe_code)]
 #![warn(missing_docs)]

@@ -6,8 +6,6 @@
 //!
 //! # Safety
 //! 
-//! ALL functions in this crate are marked unsafe by design requirement.
-//! This is an architectural decision, not a reflection of actual memory unsafety.
 
 #![allow(unsafe_code)]
 #![warn(missing_docs)]
